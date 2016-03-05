@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Repository;
 
 import com.agnieszka.projectexpert.core.domain.User;
