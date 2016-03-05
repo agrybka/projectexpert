@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+	<!-- Utworzenie polaczenia z baz danych -->
+	<bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3306/projekt?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"
+		p:password="root" p:username="root"/>
+	
+	<!-- Konfiguracja JPA fabryki -->
+	<bean id="factory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="datasource" p:persistenceProviderClass="org.hibernate.jpa.HibernatePersistenceProvider"
+		p:packagesToScan="com.agnieszka.projectexpert.core.domain">
+			<property name="jpaProperties">
+				<props>
+					<!-- create - tworzy baze danych od nowa, create-drop - tworzy baze od nowa a przy zamknieciu aplikacji usuwa baze  -->
+					<!-- update - waliduje zmiany i probuje je dodac, valie - waliduje poprawnosc mapowania -->
+					<prop key="hibernate.hbm2ddl.auto">validate</prop>
+            		<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				</props>
+			</property>
+	</bean>
+	
+	<!-- Utworzyc kklasy Menadzera transakcji -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" 
+		p:entityManagerFactory-ref="factory">
+	</bean>
+	<!-- Wlaczenie obslugi transakcji poprzez adnotacje -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- Wyszukiwanie adnotacji springa w pakietach -->
+	<context:component-scan base-package="com.agnieszka.projectexpert.core.dao"/>
+	<context:component-scan base-package="com.agnieszka.projectexpert.core.service"/>
+</beans>
