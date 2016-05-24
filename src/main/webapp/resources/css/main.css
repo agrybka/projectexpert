@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+body{
+	font-size:14px;
+}
+
+#loginForm{
+	height:100px;width:300px;margin:50px auto;
+}
+
+.loginBtn{
+	float:right;
+}

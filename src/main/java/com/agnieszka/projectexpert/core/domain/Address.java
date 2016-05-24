@@ -36,22 +36,21 @@ public class Address implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @NotNull
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 3, max = 100)
     @Column(name = "street")
     private String street;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 3, max = 30, message="Miasto powinno miec od {min} do {max} znaków")
     @Column(name = "city")
     private String city;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 6)
+    @Size(min = 6, max = 6)
     @Column(name = "zip_code")
     private String zipCode;
 

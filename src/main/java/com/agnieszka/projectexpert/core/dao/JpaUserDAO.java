@@ -20,6 +20,9 @@ import com.agnieszka.projectexpert.core.domain.User;
 //Kazdy obiekt moze byc w dwoch zasiegach Singleton,prototyp - dla kazdego zadania tworzony jest nowy obiekt tej klasy
 @Repository //spring utworzy pojedynczy obiekt singleton w kontenerze springa
 //@Scope("prototype")//@Scope('singleton') - domyslnie
+//void test(String param)
+//{ if(param.equals("test")){} //if("test".equals(param))
+
 public class JpaUserDAO implements IUserDAO{
 
 	@PersistenceContext // spring wstrzykuje obiekt tej klasy Entity Managedzer// w ejb tak samo
@@ -56,6 +59,20 @@ public class JpaUserDAO implements IUserDAO{
 	public User findById(String mail) {
 		
 		return em.find(User.class, mail);
+	}
+
+	@Override
+	public User findByLoginAndPassword(String username, String password) {
+		
+		TypedQuery<User> query=em.createNamedQuery("User.findByLoginAndPassword",User.class);
+		query.setParameter("username", username);
+		query.setParameter("password", password);
+		
+		List<User> users=query.getResultList();
+		if(users.isEmpty())
+			return null;
+		else
+			return users.get(0);
 	}
 
 }

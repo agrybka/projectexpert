@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<p:messages id="messages" globalOnly="true"/>
+	<h:form id="createForm">
+		
+		<h:panelGrid columns="3">
+			
+			<p:outputLabel for="title" value="Tytuł projektu" />
+			<p:inputText id="title" value="#{projectEditController.project.title}" style="width:600px;"/>
+			<p:message for="title" />
+			
+			<p:outputLabel for="owner" value="Właściciel projektu"/>
+			<p:selectOneMenu id="owner" value="#{projectEditController.project.author}" converter="UserConverter" style="width:500px;">
+				<f:selectItems value="#{projectEditController.users}" var="user" itemLabel="#{user.firstName} #{user.lastName}(#{user.mail})" itemValue="#{user}"/>
+			</p:selectOneMenu>
+			<p:message for="owner"/>
+			
+			<p:outputLabel for="description" value="Opis projektu" style="width:600px;"/>
+			<p:inputTextarea id="description" value="#{projectEditController.project.description}"/>
+			<p:message for="description" />
+			
+			<p:outputLabel for="planStartDate" value="Planowana data rozpoczecia"/>
+			<p:calendar id="planStartDate" value="#{projectEditController.project.planStartDate}" pattern="yyyy-MM-dd" />
+			<p:message for="planStartDate" />
+			
+			<p:outputLabel for="planEndDate" value="Planowana data zakończenia"/>
+			<p:calendar id="planEndDate" value="#{projectEditController.project.planEndDate}" pattern="yyyy-MM-dd"/>
+			<p:message for="planEndDate" />
+			
+			<h:outputText value="Status" />
+			<h:panelGroup>
+				<p:inputText value="Nowy" readonly="true" rendered="#{projectEditController.project.newStatus}"/>
+				<p:inputText value="W realizacji" readonly="true" rendered="#{projectEditController.project.inProgressStatus}"/>
+				<p:inputText value="Zakończony" readonly="true" rendered="#{projectEditController.project.endStatus}"/>
+			</h:panelGroup>
+			
+			
+		</h:panelGrid>
+		
+		<p:panel header="Członkowie projektu">
+			<p:commandButton value="Dodaj nowego członka" action="#{projectEditController.initMember()}" onclick="PF('memberDialog').show();" update=":memberForm" process="@this"/>
+			<p:dataTable id="memeberList" value="#{projectEditController.project.memeberList}" var="member">
+				<p:column headerText="Imię">
+					<h:outputText value="#{member.memberMail.firstName}" />
+				</p:column>
+				<p:column headerText="Nazwisko">
+					<h:outputText value="#{member.memberMail.lastName}" />
+				</p:column>
+				<p:column headerText="Rola w projekcie">
+					<h:outputText value="#{member.role}" />
+				</p:column>
+				<p:column headerText="Mail">
+					<h:outputText value="#{member.memberMail.mail}" />
+				</p:column>
+				<p:column headerText="Akcje">
+					<p:commandLink value="Usuń" action="#{projectEditController.deleteMember(member.memberMail.mail)}" update=":createForm:memeberList" process="@this"/>
+					
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:commandButton value="Zapisz" action="#{projectEditController.updateAction()}" ajax="false"/>
+	</h:form>
+	<p:dialog header="Nowy członek zespołu" widgetVar="memberDialog" minHeight="40" modal="true">
+   		 <h:form id="memberForm">
+   		 	<h:panelGrid columns="2">
+   		 		<p:outputLabel for="role" value="Rola w projekcie" />
+				<p:inputText id="role" value="#{projectEditController.member.role}" style="width:400px;" maxlength="20"/>
+		
+				<p:outputLabel for="owner" value="Właściciel projektu"/>
+				<p:selectOneMenu id="owner" value="#{projectEditController.member.memberMail}" converter="UserConverter" style="width:500px;">
+					<f:selectItems value="#{projectEditController.users}" var="user" itemLabel="#{user.firstName} #{user.lastName}(#{user.mail})" itemValue="#{user}"/>
+				</p:selectOneMenu>		
+				
+				<p:commandButton value="Dodaj" action="#{projectEditController.addMemebr()}" update=":createForm:memeberList :messages" onclick="PF('memberDialog').hide();"/>
+				<p:commandButton value="Anuluj" action="#{projectEditController.cancelMemeber()}" onclick="PF('memberDialog').hide();"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	</ui:define>
+	
+</ui:composition>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition>
+	<h:form id="headerForm">
+		<p:menubar>
+			<p:menuitem icon="ui-icon-home" outcome="index" value="Strona główna" />
+			<p:submenu label="Projekty" icon="ui-icon-pencil">
+				<p:menuitem value="Nowy projekt" outcome="project-create" icon="ui-icon-arrowreturnthick-1-w" />
+				<p:menuitem value="lista" outcome="project-list" icon="ui-icon-arrowreturnthick-1-e" />
+			</p:submenu>
+
+			<f:facet name="options">
+				<h:outputText value="Witaj," />
+				<h:outputText
+					value="#{userSessionController.loginUser.firstName} #{userSessionController.loginUser.lastName}"
+					rendered="#{userSessionController.loggedIn}" />
+				<h:outputText value="Gościu"
+					rendered="#{!userSessionController.loggedIn}" />
+				<p:button value="Zarejestruj się" outcome="user-register"
+					style="margin-left:10px;"
+					rendered="#{!userSessionController.loggedIn}"></p:button>
+				<p:button value="Zaloguj się" outcome="login"
+					style="margin-left:10px;"
+					rendered="#{!userSessionController.loggedIn}"></p:button>
+				<p:commandButton value="Wyloguj się"
+					action="#{userSessionController.logoutAction()}"
+					style="margin-left:10px;"
+					rendered="#{userSessionController.loggedIn}" ajax="false"></p:commandButton>
+			</f:facet>
+		</p:menubar>
+
+
+
+
+	</h:form>
+
+</ui:composition>
+</html>

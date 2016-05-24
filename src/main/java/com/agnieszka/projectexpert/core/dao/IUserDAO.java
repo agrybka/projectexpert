@@ -11,5 +11,7 @@ public interface IUserDAO {
 	void update(User user);
 	void delete(User user);
 	User findById(String mail);
+	User findByLoginAndPassword(String username,String password);
+	
 	
 }

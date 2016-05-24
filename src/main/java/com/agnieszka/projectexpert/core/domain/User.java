@@ -24,6 +24,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+
 /**
  *
  * @author Aga
@@ -39,24 +41,28 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status"),
     @NamedQuery(name = "User.findBySex", query = "SELECT u FROM User u WHERE u.sex = :sex"),
     @NamedQuery(name = "User.findByType", query = "SELECT u FROM User u WHERE u.type = :type"),
-    @NamedQuery(name = "User.findByMobile", query = "SELECT u FROM User u WHERE u.mobile = :mobile")})
+    @NamedQuery(name = "User.findByMobile", query = "SELECT u FROM User u WHERE u.mobile = :mobile"),
+    @NamedQuery(name = "User.findByLoginAndPassword", query="SELECT u FROM User u WHERE u.mail = :username and password=:password")
+
+})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotNull(message="Adres email jest wymagany")
+    @Size(min = 1, max = 100, message="Mail moze miec od {min} do {max} znaków")
+    @Email(message="Niepoprawny adres email")
     @Column(name = "mail")
     private String mail;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 256)
+    @NotNull(message="Has�o jest wymagane")
+    @Size(min = 8, max = 256, message="Has�o moze miec od {min} do {max} znaków")
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
+    @NotNull(message="Imie jest wymagane")
+    @Size(min = 1, max = 20, message="Imie moze miec od {min} do {max} znaków")
     @Column(name = "first_name")
     private String firstName;
     @Basic(optional = false)
@@ -70,7 +76,7 @@ public class User implements Serializable {
     @Column(name = "status")
     private UserStatus status;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message="Plec jest wymagana")
     @Enumerated(EnumType.STRING)
     @Column(name = "sex")
     private SEX sex;
@@ -89,7 +95,7 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userMail")
     private List<Comment> commentList;
     @JoinColumn(name = "address_id", referencedColumnName = "id")
-    @OneToOne(optional = false)
+    @OneToOne(cascade=CascadeType.ALL)
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberMail")
     private List<Memeber> memeberList;
@@ -222,6 +228,16 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.agnieszka.projekty.model.User[ mail=" + mail + " ]";
+    }
+    
+    public boolean isMale()
+	{
+		return sex==SEX.MALE;
+	}
+    
+    public boolean isFemale()
+    {
+    	return sex==SEX.FEMALE;
     }
     
 }

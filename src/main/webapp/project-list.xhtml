@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+	<ui:define name="content">
+	<h:form>
+		<p:dataTable value="#{projectListController.projects}" var="project">
+			<p:column headerText="Tytuł">
+				<h:outputText value="#{project.title}" />
+			</p:column>
+			<p:column headerText="Planowana data rozpoczęcia">
+				<h:outputText value="#{project.planStartDate}" />
+			</p:column>
+			
+			<p:column headerText="Planowana data zakończenia">
+				<h:outputText value="#{project.planEndDate}" />
+			</p:column>
+			
+			<p:column headerText="Opis">
+				<h:outputText value="#{project.description}" />
+			</p:column>
+			
+			<p:column headerText="Akcja">
+				<p:link outcome="project-edit" >
+					<p:graphicImage library="graphics" name="edit.png" width="24" height="24"/>
+					<f:param name="id" value="#{project.id}"/>
+				</p:link>
+				
+				<p:link outcome="project-view">
+					<p:graphicImage library="graphics" name="view.png" width="24" height="24"></p:graphicImage>
+					<f:param name="id" value="#{project.id}"/>
+				</p:link>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>

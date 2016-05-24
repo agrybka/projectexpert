@@ -12,9 +12,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,15 +44,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Project.findByStatus", query = "SELECT p FROM Project p WHERE p.status = :status"),
     @NamedQuery(name = "Project.findByPlanStartDate", query = "SELECT p FROM Project p WHERE p.planStartDate = :planStartDate"),
     @NamedQuery(name = "Project.findByPlanEndDate", query = "SELECT p FROM Project p WHERE p.planEndDate = :planEndDate"),
-    @NamedQuery(name = "Project.findByProjectcol", query = "SELECT p FROM Project p WHERE p.projectcol = :projectcol"),
-    @NamedQuery(name = "Project.findByAuthorMail", query = "SELECT p FROM Project p WHERE p.authorMail = :authorMail")})
+    @NamedQuery(name = "Project.findByAuthorMail", query = "SELECT p FROM Project p WHERE p.author.mail = :authorMail")})
 public class Project implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
@@ -62,20 +63,20 @@ public class Project implements Serializable {
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
-    @NotNull
+ 
     @Column(name = "start_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
     @Basic(optional = false)
-    @NotNull
+
     @Column(name = "end_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 15)
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private ProjectStatus status;
     @Basic(optional = false)
     @NotNull
     @Column(name = "plan_start_date")
@@ -86,19 +87,16 @@ public class Project implements Serializable {
     @Column(name = "plan_end_date")
     @Temporal(TemporalType.DATE)
     private Date planEndDate;
-    @Size(max = 45)
-    @Column(name = "projectcol")
-    private String projectcol;
-    @Basic(optional = false)
+    
     @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "author_mail")
-    private String authorMail;
+    @ManyToOne
+    @JoinColumn(name = "author_mail")
+    private User author;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectId")
     private List<Document> documentList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectId")
     private List<Comment> commentList;
-    @OneToMany(mappedBy = "projectId")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "projectId")
     private List<Memeber> memeberList;
 
     public Project() {
@@ -108,7 +106,7 @@ public class Project implements Serializable {
         this.id = id;
     }
 
-    public Project(Integer id, String title, String description, Date startDate, Date endDate, String status, Date planStartDate, Date planEndDate, String authorMail) {
+    public Project(Integer id, String title, String description, Date startDate, Date endDate, ProjectStatus status, Date planStartDate, Date planEndDate, User author) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -117,7 +115,7 @@ public class Project implements Serializable {
         this.status = status;
         this.planStartDate = planStartDate;
         this.planEndDate = planEndDate;
-        this.authorMail = authorMail;
+        this.author = author;
     }
 
     public Integer getId() {
@@ -160,11 +158,11 @@ public class Project implements Serializable {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
+    public ProjectStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProjectStatus status) {
         this.status = status;
     }
 
@@ -184,20 +182,14 @@ public class Project implements Serializable {
         this.planEndDate = planEndDate;
     }
 
-    public String getProjectcol() {
-        return projectcol;
+
+
+    public User getAuthor() {
+        return author;
     }
 
-    public void setProjectcol(String projectcol) {
-        this.projectcol = projectcol;
-    }
-
-    public String getAuthorMail() {
-        return authorMail;
-    }
-
-    public void setAuthorMail(String authorMail) {
-        this.authorMail = authorMail;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public List<Document> getDocumentList() {
@@ -249,4 +241,18 @@ public class Project implements Serializable {
         return "com.agnieszka.projekty.model.Project[ id=" + id + " ]";
     }
     
+    public boolean isNewStatus()
+    {
+    	return status==ProjectStatus.NEW;
+    }
+    
+    public boolean isInProgressStatus()
+    {
+    	return status==ProjectStatus.IN_PROGRESS;
+    }
+    
+    public boolean isEndStatus()
+    {
+    	return status==ProjectStatus.END;
+    }
 }
