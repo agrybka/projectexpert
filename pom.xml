@@ -180,4 +180,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<scm>
+		<url>https://github.com/agrybka/projectexpert.git</url>
+	</scm>
 </project>
