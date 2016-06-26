@@ -6,7 +6,108 @@
       xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/template.xhtml">
-	
+	<ui:define name="content">
+	<p:messages id="messages" globalOnly="true"/>
+	<h:form id="createForm">
+		
+		<h:panelGrid columns="3">
+			
+			<p:outputLabel for="title" value="Tytuł projektu" />
+			<p:inputText id="title" value="#{projectShowController.project.title}" style="width:600px;" readonly="true"/>
+			<p:message for="title" />
+			
+			<p:outputLabel for="owner" value="Właściciel projektu"/>
+			<p:inputText id="owner" value="#{projectShowController.project.author.firstName} #{projectShowController.project.author.lastName}" readonly="true"/>
+			<p:message for="owner"/>
+			
+			<p:outputLabel for="description" value="Opis projektu" style="width:600px;"/>
+			<p:inputTextarea id="description" value="#{projectShowController.project.description}" readonly="true"/>
+			<p:message for="description" />
+			
+			<p:outputLabel for="planStartDate" value="Planowana data rozpoczecia"/>
+			<p:calendar id="planStartDate" value="#{projectShowController.project.planStartDate}" pattern="yyyy-MM-dd" readonly="true" disabled="true"/>
+			<p:message for="planStartDate" />
+			
+			<p:outputLabel for="planEndDate" value="Planowana data zakończenia"/>
+			<p:calendar id="planEndDate" value="#{projectShowController.project.planEndDate}" pattern="yyyy-MM-dd" readonly="true" disabled="true"/>
+			<p:message for="planEndDate" />
+			
+			<h:outputText value="Status" />
+			<h:panelGroup>
+				<p:inputText value="Nowy" readonly="true" rendered="#{projectShowController.project.newStatus}"/>
+				<p:inputText value="W realizacji" readonly="true" rendered="#{projectShowController.project.inProgressStatus}"/>
+				<p:inputText value="Zakończony" readonly="true" rendered="#{projectShowController.project.endStatus}"/>
+			</h:panelGroup>
+			
+			
+		</h:panelGrid>
+		
+		<p:panel header="Członkowie projektu">
+			<p:dataTable id="memeberList" value="#{projectShowController.project.memeberList}" var="member">
+				<p:column headerText="Imię">
+					<h:outputText value="#{member.memberMail.firstName}" />
+				</p:column>
+				<p:column headerText="Nazwisko">
+					<h:outputText value="#{member.memberMail.lastName}" />
+				</p:column>
+				<p:column headerText="Rola w projekcie">
+					<h:outputText value="#{member.role}" />
+				</p:column>
+				<p:column headerText="Mail">
+					<h:outputText value="#{member.memberMail.mail}" />
+				</p:column>
+				
+			</p:dataTable>
+		</p:panel>
+		<p:panel header="Dokumenty">
+			<p:dataTable id="documents" value="#{projectShowController.project.documentList}" var="document">
+				<p:column headerText="Nazwa pliku">
+					<h:outputText value="#{document.name}" />
+				</p:column>
+				
+				<p:column headerText="Data dodania">
+					<h:outputText value="#{document.creationDate}" >
+						<f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Dodany przez">
+					<h:outputText value="#{document.userMail.firstName} #{document.userMail.lastName}" />
+				</p:column>
+				
+				<p:column headerText="Akcje">
+					<h:outputLink value="download.file" >
+						<f:param name="path" value="#{document.path}"/>
+						<f:param name="name" value="#{document.name}"/>
+						<h:outputText value="Pobierz" />
+					</h:outputLink>
+				</p:column>
+			</p:dataTable>
+			
+		</p:panel>
+		<p:button value="Powrót" outcome="project-list"/>
+	</h:form>
+	<hr />
+		<h:form id="commentForm">
+			<h:panelGrid columns="1" style="width:100%;">
+				<p:inputTextarea value="#{projectShowController.comment.text}" placeholder="Dodaj komentarz" style="width:100%"/>
+				<p:commandButton value="Wyślij" action="#{projectShowController.createComment()}" style="float:right;" update="@form"/>	
+			</h:panelGrid>
+			<br clear="all"/>
+			<ui:repeat value="#{projectShowController.project.commentList}" var="comment">
+				<h:panelGrid columns="1" style="margin: 5px 0;width:100%" >
+					<h:panelGroup>
+						<h:outputText value="#{comment.userMail.firstName} #{comment.userMail.lastName} " style="font-weight:bold;font-size:12px;" />
+						<h:outputText value=" - #{comment.creationDate}" style="font-size:12px;" >
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+						</h:outputText>
+					</h:panelGroup>
+					<h:outputText value="#{comment.text}" style="font-size:14px;"/>
+				</h:panelGrid>
+			</ui:repeat>
+		</h:form>
+		
+	</ui:define>
 	
 </ui:composition>
 </html>

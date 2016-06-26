@@ -7,6 +7,7 @@ package com.agnieszka.projectexpert.core.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,18 +66,9 @@ public class Document implements Serializable {
     private User userMail;
 
     public Document() {
+    
     }
 
-    public Document(Integer id) {
-        this.id = id;
-    }
-
-    public Document(Integer id, String name, String path, Date creationDate) {
-        this.id = id;
-        this.name = name;
-        this.path = path;
-        this.creationDate = creationDate;
-    }
 
     public Integer getId() {
         return id;
@@ -131,6 +123,14 @@ public class Document implements Serializable {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
+    }
+    
+    public boolean isTemporal()
+    {
+    	if(id==null)
+    		return true;
+    	else
+    		return false;
     }
 
     @Override

@@ -7,8 +7,9 @@
 
 <ui:composition template="/WEB-INF/template.xhtml">
 	<ui:define name="content">
+	<p:messages id="messages" globalOnly="true"/>
 	<h:form>
-		<p:dataTable value="#{projectListController.projects}" var="project">
+		<p:dataTable value="#{projectListController.projects}" var="project" style="margin-top:15px;">
 			<p:column headerText="Tytuł">
 				<h:outputText value="#{project.title}" />
 			</p:column>
@@ -18,6 +19,18 @@
 			
 			<p:column headerText="Planowana data zakończenia">
 				<h:outputText value="#{project.planEndDate}" />
+			</p:column>
+			
+			<p:column headerText="Data rozpoczęcia">
+				<h:outputText value="#{project.startDate}" >
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm" locale="pl"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Data zakończenia">
+				<h:outputText value="#{project.endDate}" >
+					<f:convertDateTime pattern="yyyy-MM-dd HH:mm" locale="pl"/>
+				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="Opis">
@@ -30,10 +43,18 @@
 					<f:param name="id" value="#{project.id}"/>
 				</p:link>
 				
-				<p:link outcome="project-view">
+				<p:link outcome="project-view" style="margin-left:10px;">
 					<p:graphicImage library="graphics" name="view.png" width="24" height="24"></p:graphicImage>
 					<f:param name="id" value="#{project.id}"/>
 				</p:link>
+				
+				<p:commandLink style="margin-left:10px;" action="#{projectListController.startProject(project.id)}" title="Uruchom projekt" rendered="#{project.newStatus}" update="@form messages"> 
+					<p:graphicImage library="graphics" name="start.png" width="24" height="24"></p:graphicImage>
+				</p:commandLink>
+				
+				<p:commandLink style="margin-left:10px;" action="#{projectListController.finishProject(project.id)}" title="Zakończ projekt" rendered="#{project.inProgressStatus}" update="@form messages">
+					<p:graphicImage library="graphics" name="finish.png" width="24" height="24"></p:graphicImage>
+				</p:commandLink>
 			</p:column>
 		</p:dataTable>
 	</h:form>

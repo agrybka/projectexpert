@@ -65,6 +65,33 @@
 				</p:column>
 			</p:dataTable>
 		</p:panel>
+		<p:panel header="Dokumenty">
+			<p:commandButton value="Dodaj nowy dokument" onclick="PF('fileDialog').show();" update=":fileForm"/>
+			<p:dataTable id="documents" value="#{projectEditController.project.documentList}" var="document">
+				<p:column headerText="Nazwa pliku">
+					<h:outputText value="#{document.name}" />
+				</p:column>
+				
+				<p:column headerText="Data dodania">
+					<h:outputText value="#{document.creationDate}" >
+						<f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Dodany przez">
+					<h:outputText value="#{document.userMail.firstName} #{document.userMail.lastName}" />
+				</p:column>
+				
+				<p:column headerText="Akcje">
+					<h:outputLink value="download.file" >
+						<f:param name="path" value="#{document.path}"/>
+						<f:param name="name" value="#{document.name}"/>
+						<h:outputText value="Pobierz" />
+					</h:outputLink>
+				</p:column>
+			</p:dataTable>
+			
+		</p:panel>
 		<p:commandButton value="Zapisz" action="#{projectEditController.updateAction()}" ajax="false"/>
 	</h:form>
 	<p:dialog header="Nowy członek zespołu" widgetVar="memberDialog" minHeight="40" modal="true">
@@ -81,6 +108,12 @@
 				<p:commandButton value="Dodaj" action="#{projectEditController.addMemebr()}" update=":createForm:memeberList :messages" onclick="PF('memberDialog').hide();"/>
 				<p:commandButton value="Anuluj" action="#{projectEditController.cancelMemeber()}" onclick="PF('memberDialog').hide();"/>
 			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog header="Dodaj plik" widgetVar="fileDialog" minHeight="40" modal="true">
+		<h:form id="fileForm" enctype="multipart/form-data">
+			<p:fileUpload fileUploadListener="#{projectEditController.handleFileUpload}" update=":createForm:documents :messages" oncomplete="PF('fileDialog').hide();" />
 		</h:form>
 	</p:dialog>
 	</ui:define>

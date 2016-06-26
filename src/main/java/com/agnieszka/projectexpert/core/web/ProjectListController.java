@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -27,8 +28,19 @@ public class ProjectListController implements Serializable{
 		return projects;
 	}
 	
+	public void startProject(Integer projectId)
+	{
+		JSFUtility.findService(IProjectService.class).startProject(projectId);
+		JSFUtility.sendGlobalMessage(FacesMessage.SEVERITY_INFO, "Projekt wystartowano");
+		projects=JSFUtility.findService(IProjectService.class).findAll();	
+	}
 	
-	
+	public void finishProject(Integer projectId)
+	{
+		JSFUtility.findService(IProjectService.class).endProject(projectId);
+		JSFUtility.sendGlobalMessage(FacesMessage.SEVERITY_INFO, "Projekt zakończono");
+		projects=JSFUtility.findService(IProjectService.class).findAll();	
+	}
 	
 	
 }

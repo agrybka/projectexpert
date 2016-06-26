@@ -6,6 +6,8 @@
 package com.agnieszka.projectexpert.core.domain;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -49,6 +53,10 @@ public class Comment implements Serializable {
     @ManyToOne(optional = false)
     private User userMail;
 
+    @Column(name="creation_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
+    
     public Comment() {
     }
 
@@ -92,8 +100,18 @@ public class Comment implements Serializable {
     public void setUserMail(User userMail) {
         this.userMail = userMail;
     }
+    
+    
 
-    @Override
+    public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

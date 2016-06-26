@@ -6,6 +6,7 @@
 package com.agnieszka.projectexpert.core.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -190,6 +191,15 @@ public class Project implements Serializable {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+    
+    public void addDocument(Document document)
+    {
+    	if(documentList==null)
+    		documentList=new ArrayList<>();
+    	
+    	document.setProjectId(this);
+    	documentList.add(document);
     }
 
     public List<Document> getDocumentList() {

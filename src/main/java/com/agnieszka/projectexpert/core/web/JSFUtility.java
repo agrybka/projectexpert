@@ -11,6 +11,10 @@ import org.springframework.web.jsf.FacesContextUtils;
 
 public class JSFUtility {
 
+	private JSFUtility(){
+		
+	}
+	
 	public static <T> T findService(Class<T> clazz)
 	{
 		ApplicationContext ctx = FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance());
