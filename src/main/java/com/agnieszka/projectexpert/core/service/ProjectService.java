@@ -34,8 +34,14 @@ public class ProjectService implements IProjectService {
 	@Transactional
 	@Override
 	public Project create(Project project) {
+		
+		List<Document> documents=project.getDocumentList();
+		project.setDocumentList(null);
+		dao.create(project);
+		project.setDocumentList(documents);
 		changePathDocuments(project);
-		return dao.create(project);
+		dao.update(project);
+		return project;
 	}
 
 	@Transactional

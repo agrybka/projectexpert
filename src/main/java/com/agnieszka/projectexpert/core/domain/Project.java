@@ -62,13 +62,10 @@ public class Project implements Serializable {
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "description")
-    private String description;
-    @Basic(optional = false)
- 
+    private String description; 
     @Column(name = "start_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
-    @Basic(optional = false)
 
     @Column(name = "end_date")
     @Temporal(TemporalType.TIMESTAMP)
