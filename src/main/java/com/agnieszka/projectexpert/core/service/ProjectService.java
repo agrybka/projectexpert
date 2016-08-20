@@ -117,4 +117,18 @@ public class ProjectService implements IProjectService {
 		return dao.findById(id);
 	}
 
+	@Transactional(readOnly=true)
+	@Override
+	public List<Project> findinProgressProjects() {
+		
+		return dao.findinProgressProjects();
+	}
+
+	@Transactional(readOnly=true)
+	@Override
+	public long findProjectCountByStatus(ProjectStatus status) {
+		// TODO Auto-generated method stub
+		return dao.findProjectCountByStatus(status);
+	}
+
 }

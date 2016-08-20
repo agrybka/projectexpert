@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<body>
+	<ui:composition template="/WEB-INF/template.xhtml">
+		<ui:define name="content">
+			
+			<h:form>
+				<p:dataTable value="#{userListController.list}" var="user"
+					paginator="true" paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="25,50,100">
+					<p:column headerText="Login" sortBy="#{user.mail}"
+						filterBy="#{user.mail}">
+						<h:outputText value="#{user.mail}" />
+					</p:column>
+					<p:column headerText="Imię">
+						<h:outputText value="#{user.firstName}" />
+					</p:column>
+					<p:column headerText="Nazwisko">
+						<h:outputText value="#{user.lastName}" />
+					</p:column>
+					<p:column headerText="Telefon">
+						<h:outputText value="#{user.mobile}" />
+					</p:column>
+					<p:column headerText="Płeć">
+						<h:outputText value="Mężczyzna" rendered="#{user.male}" />
+						<h:outputText value="Kobieta" rendered="#{user.female}" />
+					</p:column>
+					<p:column headerText="Miasto">
+						<h:outputText value="#{user.address.city}" />
+					</p:column>
+					<p:column headerText="Ulica">
+						<h:outputText value="#{user.address.street}" />
+					</p:column>
+					<p:column headerText="Kod pocztowy">
+						<h:outputText value="#{user.address.zipCode}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

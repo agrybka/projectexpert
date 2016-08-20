@@ -14,6 +14,9 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+		
+		
+		
 
 	<!-- Utworzenie polaczenia z baz danych -->
 	<bean id="datasource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
@@ -25,14 +28,22 @@
 	<bean id="factory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		p:dataSource-ref="datasource" p:persistenceProviderClass="org.hibernate.jpa.HibernatePersistenceProvider"
 		p:packagesToScan="com.agnieszka.projectexpert.core.domain">
+		
 			<property name="jpaProperties">
 				<props>
 					<!-- create - tworzy baze danych od nowa, create-drop - tworzy baze od nowa a przy zamknieciu aplikacji usuwa baze  -->
 					<!-- update - waliduje zmiany i probuje je dodac, valie - waliduje poprawnosc mapowania -->
 					<prop key="hibernate.hbm2ddl.auto">validate</prop>
             		<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+            		<prop key="hibernate.show_sql">true</prop>
 				</props>
 			</property>
+			<!-- aktualizuje tabele czyści
+			<property name="hibernate.transaction.flush_before_completion"
+                                value="true" />
+                        <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+                        <property name="eclipselink.ddl-generation" value="drop-and-create-tables" /> 
+                         -->
 	</bean>
 	
 	<!-- Utworzyc kklasy Menadzera transakcji -->

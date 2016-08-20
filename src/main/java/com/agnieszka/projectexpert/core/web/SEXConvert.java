@@ -1,4 +1,4 @@
-package com.agnieszka.projectexpert.core.web.converter;
+package com.agnieszka.projectexpert.core.web;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
@@ -21,7 +22,7 @@ import com.agnieszka.projectexpert.core.service.ServiceException;
 import com.agnieszka.projectexpert.core.service.UserLoginAlreadyExistsException;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class RegisterUserController implements Serializable{
 	
 	
@@ -32,6 +33,8 @@ public class RegisterUserController implements Serializable{
 	@PostConstruct//ta funkcja wywola sie po utworzenie obiektu kontroler
 	public void init()
 	{
+		System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%register init");
+		System.out.println("#### INIT");
 		user=new User();
 		user.setStatus(UserStatus.INACTIVE);
 		user.setType(UserType.STANDARD);
@@ -43,9 +46,10 @@ public class RegisterUserController implements Serializable{
 	
 	public String registerUser()
 	{
+		System.out.println("user null " +(user != null));
 		if(!user.getPassword().equals(repassword))
 		{
-			JSFUtility.sendGlobalMessage(FacesMessage.SEVERITY_ERROR, "Podane hasła są rózne");
+			JSFUtility.sendGlobalMessage(FacesMessage.SEVERITY_ERROR, "Podane hasla są rózne");
 			return null;
 		}
 		
@@ -76,6 +80,10 @@ public class RegisterUserController implements Serializable{
 		return user;
 	}
 	
+	public void setUser(User user){
+		this.user = user;
+	}
+	
 	public List<SelectItem> getSexList()
 	{
 		List<SelectItem> items=new ArrayList<>();
@@ -94,6 +102,5 @@ public class RegisterUserController implements Serializable{
 	public void setRepassword(String repassword) {
 		this.repassword = repassword;
 	}
-	
 	
 }

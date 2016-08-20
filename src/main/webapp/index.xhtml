@@ -9,42 +9,65 @@
 <body>
 	<ui:composition template="/WEB-INF/template.xhtml">
 		<ui:define name="content">
-			<h1>
-				<h:outputText value="Witaj w aplikacji"></h:outputText>
-			</h1>
-			<h:link value="Przejdź do strony rejestracji" outcome="user-register" />
+
 			<h:form>
-				<p:dataTable value="#{userListController.list}" var="user"
-					paginator="true" paginatorPosition="bottom"
+				
+				<p:panelGrid columns="2" style="margin-top:10px;float:left;">
+					<h:outputText value="Liczba aktywnych projektów:"/>
+					<h:outputText value="#{startProjectController.projectInProgressCount}" style="font-weight:bold;"/>
+					
+					<h:outputText value="Liczba zakończonych projektów:"/>
+					<h:outputText value="#{startProjectController.projectEndCount}" style="font-weight:bold;"/>
+					
+					<h:outputText value="Liczba projektów nierozpoczętych:"/>
+					<h:outputText value="#{startProjectController.projectNewCount}" style="font-weight:bold;"/>
+				</p:panelGrid>
+				
+				 <p:calendar id="inline"  mode="inline" style="float:right;" />
+				 <br clear="all" />
+				
+				<p:dataTable value="#{startProjectController.projectList}"
+					var="project" style="margin-top:15px;" paginator="true" paginatorPosition="bottom"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="25,50,100">
-					<p:column headerText="Login" sortBy="#{user.mail}"
-						filterBy="#{user.mail}">
-						<h:outputText value="#{user.mail}" />
+					<p:column headerText="Tytuł">
+						<h:outputText value="#{project.title}" />
 					</p:column>
-					<p:column headerText="Imię">
-						<h:outputText value="#{user.firstName}" />
+					<p:column headerText="Planowana data rozpoczęcia">
+						<h:outputText value="#{project.planStartDate}" />
 					</p:column>
-					<p:column headerText="Nazwisko">
-						<h:outputText value="#{user.lastName}" />
+
+					<p:column headerText="Planowana data zakończenia">
+						<h:outputText value="#{project.planEndDate}" />
 					</p:column>
-					<p:column headerText="Telefon">
-						<h:outputText value="#{user.mobile}" />
+
+					<p:column headerText="Data rozpoczęcia">
+						<h:outputText value="#{project.startDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm" locale="pl" />
+						</h:outputText>
 					</p:column>
-					<p:column headerText="Płeć">
-						<h:outputText value="Mężczyzna" rendered="#{user.male}" />
-						<h:outputText value="Kobieta" rendered="#{user.female}" />
+
+					<p:column headerText="Data zakończenia">
+						<h:outputText value="#{project.endDate}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm" locale="pl" />
+						</h:outputText>
 					</p:column>
-					<p:column headerText="Miasto">
-						<h:outputText value="#{user.address.city}" />
+
+					<p:column headerText="Opis">
+						<h:outputText value="#{project.description}" />
 					</p:column>
-					<p:column headerText="Ulica">
-						<h:outputText value="#{user.address.street}" />
-					</p:column>
-					<p:column headerText="Kod pocztowy">
-						<h:outputText value="#{user.address.zipCode}" />
+
+					<p:column headerText="Akcja">
+						<p:link outcome="project-view" style="margin-left:10px;">
+							<p:graphicImage library="graphics" name="view.png" width="24"
+								height="24"></p:graphicImage>
+							<f:param name="id" value="#{project.id}" />
+						</p:link>
 					</p:column>
 				</p:dataTable>
+				<ui:remove>
+				<p:schedule  value="#{startProjectController.eventModel}" style="width:100%;height:200px;"></p:schedule>
+				</ui:remove>
 			</h:form>
 		</ui:define>
 	</ui:composition>
