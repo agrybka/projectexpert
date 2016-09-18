@@ -9,8 +9,8 @@ public class TestObject {
 	@Test
 	public void test() {
 		assertEquals("Opis bladu", 10, 5+5);
-	Long liczba=null ;
-	zmienCos(Long.valueOf(liczba.toString()));	
+	//Long liczba=null ;
+	//zmienCos(Long.valueOf(liczba.toString()));	
 //	zmienCos(Long.valueOf(liczba.toString()));	
 	}
  public void zmienCos(long l)
