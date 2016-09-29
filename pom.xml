@@ -21,17 +21,13 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-				
+
 			</plugin>
-			<!-- Plugin dla serwera jetty
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.6.v20141205</version>
-			</plugin> -->
-			
-			
-<!-- 
+			<!-- Plugin dla serwera jetty <plugin> <groupId>org.eclipse.jetty</groupId> 
+				<artifactId>jetty-maven-plugin</artifactId> <version>9.2.6.v20141205</version> 
+				</plugin> -->
+
+
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
@@ -40,8 +36,6 @@
 					<port>8080</port>
 				</configuration>
 			</plugin>
-		
-			 -->
 		</plugins>
 	</build>
 	<dependencyManagement>
@@ -157,21 +151,12 @@
 			<artifactId>primefaces</artifactId>
 			<version>5.3</version>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/javax.faces/jsf-api 
-		<dependency>
-		    <groupId>javax.faces</groupId>
-		    <artifactId>jsf-api</artifactId>
-		    <version>2.1</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>javax.faces</groupId>
-		    <artifactId>jsf-impl</artifactId>
-		    <version>1.2-20</version>
-		</dependency>
-		-->
-	
+
+		<!-- https://mvnrepository.com/artifact/javax.faces/jsf-api <dependency> 
+			<groupId>javax.faces</groupId> <artifactId>jsf-api</artifactId> <version>2.1</version> 
+			</dependency> <dependency> <groupId>javax.faces</groupId> <artifactId>jsf-impl</artifactId> 
+			<version>1.2-20</version> </dependency> -->
+
 		<!-- biblioteki pomocnicze -->
 		<!-- biblioteki do logowania zdarzen SLF4j -->
 		<dependency>
@@ -229,7 +214,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
-			
+
 			<!-- provided -->
 			<scope>provided</scope>
 		</dependency>
@@ -253,4 +238,12 @@
 			<url>http://repository.primefaces.org</url>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>bintray-arybka92-ProjectExpert</id>
+			<name>arybka92-ProjectExpert</name>
+			<url>https://api.bintray.com/maven/arybka92/ProjectExpert/test/;publish=1</url>
+		</repository>
+	</distributionManagement>
 </project>
